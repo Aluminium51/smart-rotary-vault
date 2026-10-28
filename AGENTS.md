@@ -58,6 +58,16 @@ The STM32 is the source of truth for physical security states.
 
 The web application must never assume a hardware command has succeeded without device acknowledgment.
 
+### Architecture Guidelines
+
+- Read `docs/ARCHITECTURE.md` before making changes to system structure, data flows, integrations, or component responsibilities.
+- Follow the documented component boundaries and dependency rules.
+- Treat the existing source code as the implementation truth; report any discrepancies with the architecture document.
+- Do not introduce new backend services, database layers, or communication protocols without a clear requirement.
+- Preserve established security boundaries and hardware ownership of physical state.
+- Update `docs/ARCHITECTURE.md` when an approved architectural change is implemented.
+- Read `web/DESIGN.md` for UI-related changes.
+
 ## 4. Repository Structure
 
 ```text
