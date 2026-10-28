@@ -124,6 +124,16 @@ Follow the existing repository structure. Do not create new architectural layers
 - Use semantic HTML and accessible labels.
 - Avoid unnecessary animations or visual complexity.
 
+### Design System
+
+- Read `web/DESIGN.md` before implementing or modifying UI.
+- Treat DESIGN.md as the source of truth for visual design decisions.
+- Preserve the Industrial Terminal Brutalism design language.
+- Implement design tokens through CSS variables and Tailwind utilities.
+- Do not introduce inconsistent colors, typography, radii, or shadows.
+- Prioritize accessibility, responsive behavior, and operational clarity.
+- Update DESIGN.md when an approved design-system change is introduced.
+
 ## 6. Firebase & IoT Rules
 
 ### Firebase
