@@ -32,7 +32,7 @@ export function getScenario(scenario: Scenario): VaultTelemetry {
     case "alarm":
       return { ...base, mode: "alarm", position: 24, direction: "IDLE", tamper: true, warning: "Tamper sensor triggered. Inspect device locally." };
     case "lockout":
-      return { ...base, mode: "lockout", direction: "IDLE", failedAttempts: 5, warning: "Authentication locked out after repeated failures." };
+      return { ...base, mode: "lockout", direction: "IDLE", failedAttempts: 3, warning: "Authentication locked out after 3 failed attempts." };
     case "offline":
       return { ...base, connection: "offline", updatedAt: "2026-10-28T09:27:04+07:00", direction: "IDLE", warning: "Device offline. Status may be stale.", commandsAvailable: false };
     default:
@@ -53,8 +53,8 @@ export function createMockCommandId(): string {
 export const events: SecurityEvent[] = [
   { id: "EVT-1048", at: "2026-10-28T09:42:18+07:00", type: "access", severity: "info", title: "Vault secured", detail: "Local lock state confirmed by controller." },
   { id: "EVT-1047", at: "2026-10-28T09:41:02+07:00", type: "authentication", severity: "info", title: "Local unlock accepted", detail: "Rotary authentication completed at device." },
-  { id: "EVT-1046", at: "2026-10-28T09:38:41+07:00", type: "authentication", severity: "warning", title: "Access denied", detail: "Invalid local rotary entry; attempt 3 of 5." },
-  { id: "EVT-1045", at: "2026-10-28T09:38:10+07:00", type: "authentication", severity: "warning", title: "Access denied", detail: "Invalid local rotary entry; attempt 2 of 5." },
+  { id: "EVT-1046", at: "2026-10-28T09:38:41+07:00", type: "authentication", severity: "warning", title: "Access denied", detail: "Invalid local rotary entry; attempt 3 of 3. Lockout threshold reached." },
+  { id: "EVT-1045", at: "2026-10-28T09:38:10+07:00", type: "authentication", severity: "warning", title: "Access denied", detail: "Invalid local rotary entry; attempt 2 of 3." },
   { id: "EVT-1044", at: "2026-10-28T08:26:54+07:00", type: "tamper", severity: "critical", title: "Tamper detected", detail: "Impact sensor triggered; alarm activated." },
   { id: "EVT-1043", at: "2026-10-28T08:20:16+07:00", type: "command", severity: "info", title: "Alarm silence acknowledged", detail: "Simulated controller acknowledgment recorded." },
   { id: "EVT-1041", at: "2026-10-28T07:56:29+07:00", type: "connection", severity: "info", title: "Gateway reconnected", detail: "Telemetry resumed after reconnect." },

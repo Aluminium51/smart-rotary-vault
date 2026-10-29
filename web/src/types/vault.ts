@@ -4,7 +4,7 @@ export type Direction = "CW" | "CCW" | "IDLE";
 export type Severity = "info" | "warning" | "critical";
 export type EventType = "access" | "authentication" | "tamper" | "connection" | "command";
 export type CommandKind = "lockout" | "silence";
-export type CommandStatus = "pending" | "executed" | "rejected" | "failed";
+export type CommandStatus = "pending" | "acknowledged" | "executed" | "rejected" | "failed";
 
 export interface VaultTelemetry {
   mode: VaultMode;

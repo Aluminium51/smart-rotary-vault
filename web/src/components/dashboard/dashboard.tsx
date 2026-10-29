@@ -19,7 +19,7 @@ export function Dashboard() {
   const [confirm, setConfirm] = useState<CommandKind | null>(null);
   const [response, setResponse] = useState<"acknowledged" | "rejected" | "timeout">("acknowledged");
   const telemetry = getScenario(scenario);
-  const commandPending = commands.some((command) => command.status === "pending");
+  const commandPending = commands.some((command) => command.status === "pending" || command.status === "acknowledged");
 
   function requestCommand() {
     if (!confirm || !telemetry.commandsAvailable || commandPending) return;
@@ -28,6 +28,9 @@ export function Dashboard() {
     const result = response;
     setConfirm(null);
     setCommands((current) => [{ id, kind, status: "pending", createdAt: new Date().toISOString() }, ...current]);
+    if (result === "acknowledged") window.setTimeout(() => {
+      setCommands((current) => current.map((command) => command.id === id ? { ...command, status: "acknowledged" } : command));
+    }, 700);
     window.setTimeout(() => {
       setCommands((current) => current.map((command) => command.id === id
         ? { ...command, status: result === "timeout" ? "failed" : simulateCommandResult(kind, result) }
@@ -37,7 +40,7 @@ export function Dashboard() {
 
   return (
     <>
-      <div className="mb-8 flex flex-wrap items-end justify-between gap-5 border-b hairline pb-6">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-5 border-b hairline pb-4">
         <div>
           <p className="technical-label mb-3">01 / Operations</p>
           <h1 className="text-3xl font-medium tracking-[-.05em] sm:text-4xl">Security control center</h1>
@@ -52,17 +55,17 @@ export function Dashboard() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-12">
-        <section aria-labelledby="vault-status" className="panel min-w-0 p-5 sm:p-7 lg:col-span-7">
+        <section aria-labelledby="vault-status" className="panel min-w-0 p-5 lg:col-span-7">
           <div className="flex items-start justify-between gap-4">
             <h2 id="vault-status" className="technical-label">Vault status / STM32 reported</h2>
             {telemetry.mode === "locked" && telemetry.connection === "online"
               ? <ShieldCheck size={20} className="text-success" aria-hidden="true" />
               : <ShieldAlert size={20} className="text-warning" aria-hidden="true" />}
           </div>
-          <div className={`mt-7 break-words text-[clamp(3rem,8vw,6.5rem)] leading-none tracking-[-.08em] ${telemetry.connection === "offline" ? "text-offline" : stateColor[telemetry.mode]}`}>
+          <div className={`mt-4 break-words text-[clamp(3rem,7vw,5.5rem)] leading-none tracking-[-.08em] ${telemetry.connection === "offline" ? "text-offline" : stateColor[telemetry.mode]}`}>
             {telemetry.connection === "offline" ? "OFFLINE" : telemetry.mode.toUpperCase()}
           </div>
-          <div className="mt-7 grid gap-5 border-t hairline pt-5 sm:grid-cols-2">
+          <div className="mt-4 grid gap-4 border-t hairline pt-4 sm:grid-cols-2">
             <div>
               <p className="technical-label">Connection</p>
               <p className={`mt-2 flex items-center gap-2 text-sm uppercase ${telemetry.connection === "online" ? "text-success" : "text-muted"}`}>
@@ -77,10 +80,10 @@ export function Dashboard() {
               </time>
             </div>
           </div>
-          <p className="mt-6 border-l-2 border-warning pl-3 text-xs leading-5 text-muted">{telemetry.warning}</p>
+          <p className="mt-4 border-l-2 border-warning pl-3 text-xs leading-5 text-muted">{telemetry.warning}</p>
         </section>
 
-        <section aria-labelledby="dial-title" className="panel min-w-0 p-5 sm:p-7 lg:col-span-5">
+        <section aria-labelledby="dial-title" className="panel min-w-0 p-5 lg:col-span-5">
           <div className="flex items-start justify-between">
             <h2 id="dial-title" className="technical-label">Rotary dial monitor</h2>
             <span className="technical-label">KY-040</span>
@@ -88,11 +91,11 @@ export function Dashboard() {
           <RotaryDial position={telemetry.position} direction={telemetry.direction} />
         </section>
 
-        <section aria-labelledby="security-title" className="panel p-5 sm:p-7 lg:col-span-5">
+        <section aria-labelledby="security-title" className="panel p-5 lg:col-span-5">
           <h2 id="security-title" className="technical-label">Security monitoring</h2>
-          <div className="mt-6 grid grid-cols-2 gap-4 border-b hairline pb-6">
+          <div className="mt-4 grid grid-cols-2 gap-4 border-b hairline pb-4">
             <div>
-              <p className="technical-label">Failed attempts</p>
+              <p className="technical-label">Failed attempts / 3 max</p>
               <p className={`mt-3 text-4xl tabular-nums ${telemetry.failedAttempts > 0 ? "text-warning" : ""}`}>
                 {String(telemetry.failedAttempts).padStart(2, "0")}
               </p>
@@ -110,7 +113,7 @@ export function Dashboard() {
           </div>
         </section>
 
-        <section aria-labelledby="remote-title" className="panel p-5 sm:p-7 lg:col-span-7">
+        <section aria-labelledby="remote-title" className="panel p-5 lg:col-span-7">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <h2 id="remote-title" className="technical-label">Remote operations</h2>
@@ -118,7 +121,7 @@ export function Dashboard() {
             </div>
             <span className="border border-white/25 px-2 py-1 text-[.65rem] uppercase text-muted">Mock channel</span>
           </div>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-4 flex flex-wrap gap-3">
             <Button variant="outline" className="h-11 border-white/25 bg-elevated px-4 text-xs hover:bg-white/10"
               disabled={!telemetry.commandsAvailable || commandPending} onClick={() => setConfirm("lockout")}>
               Request lockout
@@ -133,15 +136,16 @@ export function Dashboard() {
               : telemetry.mode !== "alarm" ? "Alarm silence is available only in the alarm scenario."
                 : "Commands require simulated confirmation."}
           </p>
-          <div aria-live="polite" className="mt-6 border-t hairline pt-4 text-xs">
+          <div aria-live="polite" className="mt-4 border-t hairline pt-4 text-xs">
+            <p className="mb-3 text-sm uppercase">Command status: <strong className={commands[0]?.status === "executed" ? "text-success" : commands[0]?.status === "pending" || commands[0]?.status === "acknowledged" ? "text-warning" : commands[0] ? "text-danger" : "text-muted"}>{commands[0] ? commands[0].status === "failed" ? "TIMED OUT" : commands[0].status.toUpperCase() : "IDLE"}</strong></p>
             <p className="technical-label mb-3">Session command history</p>
             {commands.length ? (
               <div className="divide-y divide-white/12">
                 {commands.map((command) => (
                   <div key={command.id} className="flex flex-wrap justify-between gap-2 py-2">
                     <span>{command.kind.toUpperCase()} / {command.id}</span>
-                    <span className={command.status === "executed" ? "text-success" : command.status === "pending" ? "text-warning" : "text-danger"}>
-                      {command.status.toUpperCase()} <span className="text-muted">/ SIMULATED</span>
+                    <span className={command.status === "executed" ? "text-success" : command.status === "pending" || command.status === "acknowledged" ? "text-warning" : "text-danger"}>
+                      {command.status === "failed" ? "TIMED OUT" : command.status.toUpperCase()} <span className="text-muted">/ SIMULATED</span>
                     </span>
                   </div>
                 ))}

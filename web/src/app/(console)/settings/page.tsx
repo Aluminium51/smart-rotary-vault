@@ -24,14 +24,14 @@ export default function SettingsPage() {
         <h1 className="text-3xl font-medium tracking-[-.05em] sm:text-4xl">Device information</h1>
         <p className="mt-3 text-sm text-muted">Read-only configuration / No live connection</p>
       </div>
-      <section aria-labelledby="identity-title" className="panel max-w-4xl p-5 sm:p-7">
+      <section aria-labelledby="identity-title" className="panel p-5 sm:p-7">
         <div className="flex flex-wrap justify-between gap-3">
           <h2 id="identity-title" className="technical-label">Vault 01 / Device profile</h2>
           <span className="text-[.68rem] uppercase text-warning">Demonstration data</span>
         </div>
-        <dl className="mt-5 divide-y divide-white/12">
+        <dl className="mt-5 grid gap-x-8 lg:grid-cols-2">
           {details.map(([label, value]) => (
-            <div key={label} className="grid gap-2 py-4 sm:grid-cols-[210px_minmax(0,1fr)]">
+            <div key={label} className="grid gap-2 border-t hairline py-4 sm:grid-cols-[180px_minmax(0,1fr)] lg:grid-cols-1 xl:grid-cols-[180px_minmax(0,1fr)]">
               <dt className="technical-label">{label}</dt>
               <dd className="min-w-0 break-words text-sm">{value}</dd>
             </div>

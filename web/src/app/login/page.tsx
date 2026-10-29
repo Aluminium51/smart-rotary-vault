@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { LockKeyhole } from "lucide-react";
+import { Eye, EyeOff, LockKeyhole } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   function signIn(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,14 +28,14 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="grid min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(360px,520px)]">
+    <main className="grid min-h-dvh lg:grid-cols-[minmax(0,3fr)_minmax(400px,2fr)]">
       <section className="flex min-h-[250px] flex-col justify-between border-b hairline p-6 sm:p-10 lg:border-r lg:border-b-0 lg:p-14">
         <div className="flex items-center gap-3 text-xs uppercase tracking-[.1em]">
           <span className="flex size-9 items-center justify-center border border-white/40"><LockKeyhole size={18} aria-hidden="true" /></span>
           SRV / CONTROL
         </div>
         <div className="max-w-3xl py-12">
-          <p className="technical-label mb-5">Administrative access / Mock environment</p>
+          <p className="technical-label mb-5">Security system / Rev. 01<br />STM32 + ESP32-S3<br />Local authentication / Remote monitoring</p>
           <h1 className="text-[clamp(2.5rem,6vw,5.5rem)] leading-[1.05] tracking-[-.08em]">SMART ROTARY<br />& TAMPER VAULT</h1>
           <p className="mt-6 max-w-md text-sm leading-6 text-muted">
             Security telemetry and remote administration interface. This demonstration does not connect to physical hardware.
@@ -42,7 +43,7 @@ export default function LoginPage() {
         </div>
         <p className="technical-label">System / Vault 01</p>
       </section>
-      <section className="flex items-center px-6 py-12 sm:px-10 lg:px-14">
+      <section className="flex items-center justify-center px-6 py-12 sm:px-10 lg:px-10">
         <div className="w-full max-w-md">
           <p className="technical-label mb-4">01 / Sign in</p>
           <h2 className="text-2xl font-medium">Administrator login</h2>
@@ -55,8 +56,9 @@ export default function LoginPage() {
             </div>
             <div>
               <label htmlFor="password" className="technical-label mb-2 block">Password</label>
-              <input id="password" name="password" type="password" autoComplete="current-password" required value={password}
-                onChange={(event) => setPassword(event.target.value)} className="field" placeholder="Enter password" />
+              <div className="relative"><input id="password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" required value={password}
+                onChange={(event) => setPassword(event.target.value)} className="field pr-12" placeholder="Enter password" />
+                <button type="button" onClick={() => setShowPassword((shown) => !shown)} aria-label={showPassword ? "Hide password" : "Show password"} aria-pressed={showPassword} className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-muted hover:text-foreground">{showPassword ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}</button></div>
             </div>
             {error && <p role="alert" className="border-l-2 border-danger pl-3 text-sm text-danger">{error}</p>}
             <Button type="submit" disabled={loading} className="h-12 w-full text-xs">{loading ? "Signing in..." : "Sign in to dashboard"}</Button>

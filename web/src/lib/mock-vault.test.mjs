@@ -8,6 +8,11 @@ test("offline scenario does not permit remote commands", () => {
   assert.equal(state.commandsAvailable, false);
 });
 
+test("lockout uses the three-attempt demonstration threshold", () => {
+  assert.equal(getScenario("lockout").failedAttempts, 3);
+  assert.match(getVisibleEvents("secured", []).find((event) => event.id === "EVT-1046").detail, /3 of 3/);
+});
+
 test("commands require a simulated acknowledgment before execution", () => {
   assert.equal(simulateCommandResult("lockout", "pending"), "pending");
   assert.equal(simulateCommandResult("lockout", "acknowledged"), "executed");
