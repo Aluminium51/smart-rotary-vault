@@ -11,6 +11,14 @@ export const scenarioLabels = {
 
 export type Scenario = keyof typeof scenarioLabels;
 
+export const commandStatusLabels = {
+  pending: "SIMULATION PENDING",
+  acknowledged: "SIMULATED ACK",
+  executed: "SIMULATION COMPLETE",
+  rejected: "SIMULATED REJECTION",
+  failed: "SIMULATION TIMED OUT",
+} as const satisfies Record<CommandStatus, string>;
+
 const base: VaultTelemetry = {
   mode: "locked",
   connection: "online",
@@ -75,11 +83,19 @@ export function getVisibleEvents(scenario: Scenario, commands: RemoteCommand[]):
     at: command.createdAt,
     type: "command",
     severity: command.status === "executed" ? "info" : "warning",
-    title: command.status === "executed" ? `${command.kind === "silence" ? "Alarm silence" : "Lockout"} acknowledged`
-      : `Command ${command.status}`,
-    detail: `Simulated ${command.kind} request; ${command.status}. No hardware action.`,
+    title: `${command.kind === "silence" ? "Alarm silence" : "Lockout"} / ${commandStatusLabels[command.status]}`,
+    detail: "Local simulation only. No hardware action.",
   }));
   const currentScenario = scenarioEvents[scenario];
   return [...commandEvents, ...(currentScenario ? [currentScenario] : []), ...events]
     .sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
+}
+
+export function getRecentEvents(visibleEvents: SecurityEvent[], tamperActive: boolean): SecurityEvent[] {
+  const unique = [...new Map(visibleEvents.map((event) => [event.id, event])).values()]
+    .sort((a, b) => Date.parse(b.at) - Date.parse(a.at));
+  const recent = unique.slice(0, 4);
+  const tamper = tamperActive ? unique.find((event) => event.type === "tamper") : undefined;
+  if (!tamper || recent.some((event) => event.id === tamper.id)) return recent;
+  return [...recent.slice(0, 3), tamper].sort((a, b) => Date.parse(b.at) - Date.parse(a.at));
 }

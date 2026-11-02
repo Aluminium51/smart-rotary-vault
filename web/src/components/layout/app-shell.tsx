@@ -22,8 +22,8 @@ export function AppShell({ children }: Readonly<{ children: React.ReactNode }>) 
             <span className="flex size-9 items-center justify-center border border-white/40"><LockKeyhole size={18} aria-hidden="true" /></span>
             <span>SRV<span className="text-muted"> / </span>CONTROL</span>
           </Link>
-          <div className="flex items-center gap-3 text-[.68rem] tracking-[.12em] uppercase text-muted">
-            <span className="size-1.5 bg-warning" aria-hidden="true" />Simulation mode <span className="hidden sm:inline">/ No hardware connection</span>
+          <div className="flex items-start gap-3 text-[.68rem] leading-5 tracking-[.12em] uppercase text-muted">
+            <span className="mt-[.45rem] size-1.5 shrink-0 bg-warning" aria-hidden="true" /><span>Simulation mode / Hardware not connected</span>
           </div>
         </div>
       </header>

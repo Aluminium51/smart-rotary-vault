@@ -52,9 +52,9 @@ export function VaultScene({ telemetry, reducedMotion, resetKey, onContextLost }
   });
 
   return <>
-    <ambientLight intensity={1.3} />
-    <directionalLight position={[3, 5, 6]} intensity={2.4} />
-    <directionalLight position={[-4, 1, -3]} intensity={0.8} />
+    <ambientLight intensity={1.6} />
+    <directionalLight position={[3, 5, 6]} intensity={2.6} />
+    <directionalLight position={[-4, 2, 4]} intensity={1.2} />
     <VaultModel telemetry={telemetry} reducedMotion={reducedMotion} />
     <OrbitControls ref={controls} onStart={() => { resetting.current = false; }} enablePan={false} enableDamping={!reducedMotion} dampingFactor={0.12} minDistance={5} maxDistance={9} minPolarAngle={0.55} maxPolarAngle={1.85} minAzimuthAngle={-1.35} maxAzimuthAngle={1.35} />
   </>;
