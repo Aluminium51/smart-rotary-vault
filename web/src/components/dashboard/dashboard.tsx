@@ -2,17 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ArrowUpRight, Radio, ShieldAlert, ShieldCheck, WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { EventRows } from "@/components/dashboard/event-rows";
-import { RotaryDial } from "@/components/dashboard/rotary-dial";
 import { useMockSession } from "@/hooks/mock-session";
 import { createMockCommandId, getScenario, scenarioLabels, simulateCommandResult, type Scenario } from "@/lib/mock-vault";
 import type { CommandKind } from "@/types/vault";
 
 const stateColor = { locked: "text-success", unlocked: "text-warning", alarm: "text-danger", lockout: "text-danger" } as const;
 const dateTime = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Bangkok", dateStyle: "medium", timeStyle: "medium" });
+const VaultViewer = dynamic(() => import("@/components/vault-3d/vault-viewer"), { ssr: false, loading: () => <div role="status" className="flex h-[280px] items-center justify-center text-xs text-muted">Loading 3D viewer…</div> });
 
 export function Dashboard() {
   const { scenario, setScenario, commands, setCommands, visibleEvents } = useMockSession();
@@ -83,12 +84,8 @@ export function Dashboard() {
           <p className="mt-4 border-l-2 border-warning pl-3 text-xs leading-5 text-muted">{telemetry.warning}</p>
         </section>
 
-        <section aria-labelledby="dial-title" className="panel min-w-0 p-5 lg:col-span-5">
-          <div className="flex items-start justify-between">
-            <h2 id="dial-title" className="technical-label">Rotary dial monitor</h2>
-            <span className="technical-label">KY-040</span>
-          </div>
-          <RotaryDial position={telemetry.position} direction={telemetry.direction} />
+        <section aria-label="Simulated 3D vault and rotary dial" className="panel min-w-0 p-5 lg:col-span-5">
+          <VaultViewer telemetry={telemetry} />
         </section>
 
         <section aria-labelledby="security-title" className="panel p-5 lg:col-span-5">
