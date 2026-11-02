@@ -1,0 +1,17 @@
+../Core/Src/main.c:115:5:__io_putchar	1
+../Core/Src/main.c:127:5:main	1
+../Core/Src/main.c:214:6:SystemClock_Config	3
+../Core/Src/main.c:261:13:MX_TIM2_Init	3
+../Core/Src/main.c:310:13:MX_TIM3_Init	6
+../Core/Src/main.c:369:13:MX_USART1_UART_Init	2
+../Core/Src/main.c:402:13:MX_USART2_UART_Init	2
+../Core/Src/main.c:435:13:MX_GPIO_Init	1
+../Core/Src/main.c:497:13:Smoke_Test_Loop	4
+../Core/Src/main.c:521:6:HAL_GPIO_EXTI_Callback	3
+../Core/Src/main.c:537:13:KY002_Test_Loop	7
+../Core/Src/main.c:585:13:KY040_Test_Loop	10
+../Core/Src/main.c:649:13:Buzzer_Off	1
+../Core/Src/main.c:656:13:Buzzer_Beep	4
+../Core/Src/main.c:674:13:KY006_Test_Loop	7
+../Core/Src/main.c:724:13:UartLink_Test_Loop	14
+../Core/Src/main.c:821:6:Error_Handler	1

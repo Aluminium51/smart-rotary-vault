@@ -1,0 +1,5 @@
+# PlatformIO build output
+.pio/
+
+# Local Wi-Fi credentials / per-developer config — never commit
+**/include/secrets.h

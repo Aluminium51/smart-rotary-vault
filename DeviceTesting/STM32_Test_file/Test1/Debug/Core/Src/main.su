@@ -1,0 +1,17 @@
+../Core/Src/main.c:115:5:__io_putchar	24	static
+../Core/Src/main.c:127:5:main	8	static
+../Core/Src/main.c:214:6:SystemClock_Config	88	static
+../Core/Src/main.c:261:13:MX_TIM2_Init	56	static
+../Core/Src/main.c:310:13:MX_TIM3_Init	64	static
+../Core/Src/main.c:369:13:MX_USART1_UART_Init	8	static
+../Core/Src/main.c:402:13:MX_USART2_UART_Init	8	static
+../Core/Src/main.c:435:13:MX_GPIO_Init	48	static
+../Core/Src/main.c:497:13:Smoke_Test_Loop	16	static
+../Core/Src/main.c:521:6:HAL_GPIO_EXTI_Callback	16	static
+../Core/Src/main.c:537:13:KY002_Test_Loop	48	static
+../Core/Src/main.c:585:13:KY040_Test_Loop	32	static
+../Core/Src/main.c:649:13:Buzzer_Off	4	static
+../Core/Src/main.c:656:13:Buzzer_Beep	24	static
+../Core/Src/main.c:674:13:KY006_Test_Loop	24	static
+../Core/Src/main.c:724:13:UartLink_Test_Loop	160	static
+../Core/Src/main.c:821:6:Error_Handler	4	static,ignoring_inline_asm
