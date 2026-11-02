@@ -58,6 +58,16 @@ The STM32 is the source of truth for physical security states.
 
 The web application must never assume a hardware command has succeeded without device acknowledgment.
 
+### Architecture Guidelines
+
+- Read `docs/ARCHITECTURE.md` before making changes to system structure, data flows, integrations, or component responsibilities.
+- Follow the documented component boundaries and dependency rules.
+- Treat the existing source code as the implementation truth; report any discrepancies with the architecture document.
+- Do not introduce new backend services, database layers, or communication protocols without a clear requirement.
+- Preserve established security boundaries and hardware ownership of physical state.
+- Update `docs/ARCHITECTURE.md` when an approved architectural change is implemented.
+- Read `web/DESIGN.md` for UI-related changes.
+
 ## 4. Repository Structure
 
 ```text
@@ -123,6 +133,16 @@ Follow the existing repository structure. Do not create new architectural layers
 - Provide clear loading, empty, error, and offline states.
 - Use semantic HTML and accessible labels.
 - Avoid unnecessary animations or visual complexity.
+
+### Design System
+
+- Read `web/DESIGN.md` before implementing or modifying UI.
+- Treat DESIGN.md as the source of truth for visual design decisions.
+- Preserve the Industrial Terminal Brutalism design language.
+- Implement design tokens through CSS variables and Tailwind utilities.
+- Do not introduce inconsistent colors, typography, radii, or shadows.
+- Prioritize accessibility, responsive behavior, and operational clarity.
+- Update DESIGN.md when an approved design-system change is introduced.
 
 ## 6. Firebase & IoT Rules
 
